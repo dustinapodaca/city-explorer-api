@@ -36,10 +36,17 @@ app.get('/', (req, res) => {
 });
 
 // Weather Endpoint
-app.get('/weather', (req, res) => {
+app.get('/weather', getWeather);
+
+async function getWeather(req, res) {
+  // const cityLocation = req.query.searchQuery; // note to use searchQuery on front end.
+  const lat = req.query.lat;
+  const lon = req.query.lon;
+  const url = `https://api.weatherbit.io/v2.0/forecast/daily?key=${process.env.WEATHER_API_KEY}&lat=${req.query.lat}&lon=${req.query.lon}&days=5`;
+
   try {
-    const cityLocation = req.query.searchQuery;
-    let weatherData = data.find(location => location.city_name.toLowerCase() === cityLocation.toLowerCase());
+    const weatherRes = await axios.get(url);
+    let weatherData = data.find(location => location.lat && location.lon === lat && lon);
     let weatherForcast = [];
     weatherData.data.forEach(day => {
       let date = day.valid_date;
@@ -51,7 +58,7 @@ app.get('/weather', (req, res) => {
   } catch (error) {
     res.status(500).send('Sorry, something went wrong.');
   }
-});
+};
 
 class Forecast {
   constructor(date, description) {
@@ -61,17 +68,16 @@ class Forecast {
 }
 
 
-
 //Class 08
 
-// app.get('/photos', getPhotos);
+// app.get('/weather', getWeather);
 
-// async function getPhotos(req, res) {
-//   const searchQuery = req.query.searchQuery; // note to use searchQuery on front end.
-//   const url = `https://api.unsplash.com/search/photos?client_id=${process.env.UNSPLASH_ACCESS_KEY}&query=${searchQuery}`;
+// async function getWeather(req, res) {
+//   const cityLocation = req.query.searchQuery; // note to use searchQuery on front end.
+//   const url = `https://api.weatherbit.io/v2.0/forecast/daily?key=${process.env.WEATHER_API_KEY}&lat=${req.query.lat}&lon=${req.query.lon}&days=8`;
 //   try {
-//     const photoResponse = await axios.get(url);
-//     const photoArray = photoResponse.data.results.map(photo => new Photo(photo));
+//     // const weatherRes = await axios.get(url);
+//     const photoArray = weatherRes.data.results.map(photo => new Photo(photo));
 //     res.status(200).send(photoArray);
 
 
