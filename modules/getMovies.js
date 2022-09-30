@@ -4,7 +4,7 @@ const axios = require('axios');
 
 async function getMovies(req, res) {
   const cityLocation = req.query.query; // note to use query on front end.
-  const url = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.MOVIE_API_KEY}&query=${cityLocation}`;
+  const url = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.MOVIE_API_KEY}&query=${cityLocation}&page=1&include_adult=false`;
   console.log(url);
   try {
     const movieRes = await axios.get(url);
