@@ -8,7 +8,7 @@ const cache = require('./cache.js');
 
 async function getWeather(req, res) {
   const cityLocation = req.query.searchQuery; // note to use searchQuery on front end.
-  const url = `https://api.weatherbit.io/v2.0/forecast/daily?city=${cityLocation}&key=${process.env.WEATHER_API_KEY}&days=6`;
+  const url = `https://api.weatherbit.io/v2.0/forecast/daily?city=${cityLocation}&key=${process.env.WEATHER_API_KEY}&units=I&days=6`;
   console.log(url);
   try {
     //make conditional to check if cache has data
